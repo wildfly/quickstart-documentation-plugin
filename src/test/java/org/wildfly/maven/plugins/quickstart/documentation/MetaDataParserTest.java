@@ -16,7 +16,7 @@ public class MetaDataParserTest {
     @Test
     public void assertFullMetaDataParse() throws Exception {
         Path readmeLocation = Paths.get(this.getClass().getClassLoader().getResource("helloworld").toURI());
-        final MetaData metaData = MetaData.parseReadme(readmeLocation);
+        final MetaData metaData = MetaData.parseReadme(readmeLocation.resolve("README.adoc"));
 
         assertThat(metaData.getName().equals("helloworld")).isTrue();
         Assert.assertEquals("Pete Muir", metaData.getAuthor());

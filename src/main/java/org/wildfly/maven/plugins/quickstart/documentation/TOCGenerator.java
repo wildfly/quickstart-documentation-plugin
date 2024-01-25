@@ -35,9 +35,10 @@ public class TOCGenerator {
             && (!ignoredDirs.contains(entry.getFileName().toString())))
         ) {
             dirs.forEach(path -> {
-                if (Files.exists(path.resolve(sourceDoc))){
+                final Path sourceDocPath = path.resolve(sourceDoc);
+                if (Files.exists(sourceDocPath)){
                     try {
-                        allMetaData.add(MetaData.parseReadme(path));
+                        allMetaData.add(MetaData.parseReadme(sourceDocPath));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

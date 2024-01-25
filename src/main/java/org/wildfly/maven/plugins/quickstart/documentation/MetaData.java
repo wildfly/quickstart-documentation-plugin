@@ -34,14 +34,13 @@ public class MetaData {
     private String[] technologies;
     private boolean openshift;
 
-    public static MetaData parseReadme(Path quickstartDir) throws IOException {
-        Path path = quickstartDir.resolve("README.adoc");
+    public static MetaData parseReadme(Path path) throws IOException {
         try (Asciidoctor asciidoctor = create()) {
             Options options = Options.builder()
                     .safe(SafeMode.UNSAFE) //to enable includes
                     .build();
             Document doc = asciidoctor.loadFile(path.toFile(), options);
-            MetaData metaData = new MetaData(quickstartDir.getFileName().toString());
+            MetaData metaData = new MetaData(path.getParent().getFileName().toString());
             metaData.setAttributes(doc.getAttributes());
             try (BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
                 boolean shouldReadAbstract = false;

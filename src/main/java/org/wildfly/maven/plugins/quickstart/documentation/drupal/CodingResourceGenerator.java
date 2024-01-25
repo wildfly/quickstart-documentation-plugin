@@ -34,7 +34,7 @@ public class CodingResourceGenerator {
 
     public CodingResource createResource(Path codingResourceDir, String resourceType) {
         try {
-            final MetaData metaData = MetaData.parseReadme(codingResourceDir);
+            final MetaData metaData = MetaData.parseReadme(codingResourceDir.resolve("README.adoc"));
             final Optional<Product> targetProduct = drupalCommunication.getProducts().stream().filter(product -> product.getShortName().equals(metaData.getTargetProduct())).findFirst();
             String path = null;
             path = targetProduct
