@@ -21,28 +21,28 @@ public class TOCGenerator {
 
     public static void main(String[] args) throws IOException {
         Path root = Paths.get(".").normalize();
-      new TOCGenerator(Arrays.asList("target", "dist", "template", "guide")).generate(root, "[TOC-quickstart]", Paths.get("README.adoc"), false);
+      new TOCGenerator(Arrays.asList("target", "dist", "template", "guide")).generate(root, "[TOC-quickstart]", Paths.get("README.adoc"), Paths.get("README.adoc"), false);
     }
 
     public TOCGenerator(List<String> ignoredDirs) {
         this.ignoredDirs = ignoredDirs;
     }
 
-    public void generate(Path root, String tocMarker, Path targetDoc, boolean includeOpenshift) throws IOException {
+    public void generate(Path root, String tocMarker, Path sourceDoc, Path targetDoc, boolean includeOpenshift) throws IOException {
         Set<MetaData> allMetaData = new TreeSet<>(Comparator.comparing(MetaData::getName));
         try (DirectoryStream<Path> dirs = Files.newDirectoryStream(root, entry -> Files.isDirectory(entry)
             && (!entry.getFileName().toString().startsWith("."))
             && (!ignoredDirs.contains(entry.getFileName().toString())))
         ) {
             dirs.forEach(path -> {
-                if (Files.exists(path.resolve("README.adoc"))){
+                if (Files.exists(path.resolve(sourceDoc))){
                     try {
                         allMetaData.add(MetaData.parseReadme(path));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }else{
-                    System.out.println(String.format("Directory %s doesn't contain README.adoc, skipping", path));
+                    System.out.println(String.format("Directory %s doesn't contain source %s, skipping", path, sourceDoc));
                 }
             });
         }
