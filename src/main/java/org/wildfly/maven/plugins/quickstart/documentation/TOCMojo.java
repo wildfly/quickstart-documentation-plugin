@@ -36,6 +36,9 @@ public class TOCMojo extends AbstractMojo {
     @Parameter(defaultValue = "[TOC-quickstart]", required = true)
     protected String replaceMarker;
 
+    @Parameter(defaultValue = "target/docs/README-source.adoc", required = true)
+    protected String sourceDocument;
+
     @Parameter(defaultValue = "target/docs/README.adoc", required = true)
     protected String targetDocument;
 
@@ -49,7 +52,7 @@ public class TOCMojo extends AbstractMojo {
         getLog().info("root directory: " + root);
 
         try {
-            generator.generate(root, replaceMarker, Paths.get(targetDocument), includeOpenshift);
+            generator.generate(root, replaceMarker, Paths.get(sourceDocument), Paths.get(targetDocument), includeOpenshift);
         } catch (IOException e) {
             throw new MojoFailureException("Could not generate TOC", e);
         }
